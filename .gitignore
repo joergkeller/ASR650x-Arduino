@@ -7,5 +7,7 @@ tools/._gcc-arm-none-eabi
 .DS_Store
 .development
 .vscode
+.idea
+*.iml
 libraries/LoRa/examples/LoRaWAN/LoRaWAN_Sensors/LoRaWAN_GPS/build
 libraries/LoRa/examples/LoRaWAN/LoRaWAN_Sensors/LoRaWAN_GPS/.vscode
