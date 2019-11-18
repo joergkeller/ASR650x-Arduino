@@ -19,6 +19,7 @@ CubeCell-Board.upload.wait_for_upload_port=true
 
 CubeCell-Board.build.board=CubeCell_Board
 CubeCell-Board.build.core=asr650x
+CubeCell-Board.build.f_cpu=48000000L
 CubeCell-Board.build.variant=CubeCell-Board
 
 CubeCell-Board.menu.LORAWAN_REGION.0=REGION_AS923(AS1)
@@ -103,6 +104,7 @@ CubeCell-Capsule.upload.wait_for_upload_port=true
 
 CubeCell-Capsule.build.board=CubeCell_Capsule
 CubeCell-Capsule.build.core=asr650x
+CubeCell-Capsule.build.f_cpu=48000000L
 CubeCell-Capsule.build.variant=CubeCell-Capsule
 
 CubeCell-Capsule.menu.LORAWAN_REGION.0=REGION_AS923(AS1)
@@ -188,6 +190,7 @@ CubeCell-Module.upload.wait_for_upload_port=true
 
 CubeCell-Module.build.board=CubeCell_Module
 CubeCell-Module.build.core=asr650x
+CubeCell-Module.build.f_cpu=48000000L
 CubeCell-Module.build.variant=CubeCell-Module
 
 CubeCell-Module.menu.LORAWAN_REGION.0=REGION_AS923(AS1)
