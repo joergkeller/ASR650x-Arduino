@@ -71,10 +71,6 @@
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
 #define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
 
-#define LSBFIRST 0
-#define MSBFIRST 1
-
-
 typedef bool boolean;
 typedef uint8_t byte;
 typedef uint16_t word;
