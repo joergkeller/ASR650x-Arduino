@@ -46,6 +46,8 @@
 #define RAD_TO_DEG 57.295779513082320876798154814105
 #define EULER 2.718281828459045235360287471352
 
+#define LSBFIRST 0
+#define MSBFIRST 1
 
 #define  lowByte(w)   ((w) & 0xff) 
 #define  highByte(w)   ((w) >> 8) 
@@ -67,10 +69,6 @@
 #define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
 #define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
-
-#define LSBFIRST 0
-#define MSBFIRST 1
-
 
 typedef bool boolean;
 typedef uint8_t byte;
