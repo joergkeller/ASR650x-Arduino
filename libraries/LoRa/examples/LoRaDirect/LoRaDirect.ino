@@ -50,7 +50,7 @@ uint32_t APP_TX_DUTYCYCLE = 15000;
 /*!
  * Indicates if a new packet can be sent
  */
-static bool allowTx = true;
+static bool pendingTx = false;
 
 /*!
  * Timer to handle the application data transmission duty cycle
@@ -60,15 +60,13 @@ static TimerEvent_t nextPacketTimer;
 /*!
  * Device states
  */
-enum eDeviceState_LoraWan
-{
+enum DeviceState_t {
     DEVICE_STATE_INIT,
     DEVICE_STATE_JOIN,
     DEVICE_STATE_SEND,
     DEVICE_STATE_CYCLE,
     DEVICE_STATE_SLEEP
-};
-enum eDeviceState_LoraWan deviceState;
+} deviceState;
 
 LoRaMacPrimitives_t mac_primitive;
 
@@ -122,13 +120,15 @@ void loop() {
     case DEVICE_STATE_CYCLE: {
       // Schedule next packet transmission
       uint32_t delay = APP_TX_DUTYCYCLE + randr( 0, APP_TX_DUTYCYCLE_RND );
-            TimerSetValue( &nextPacketTimer, delay );
-            TimerStart( &nextPacketTimer );
+      TimerSetValue( &nextPacketTimer, delay );
+      TimerStart( &nextPacketTimer );
       deviceState = DEVICE_STATE_SLEEP;
       break;
     }
     case DEVICE_STATE_SLEEP: {
-      LoRaWAN_Sleep();
+      LowPower_Handler();
+      // Process Radio IRQ
+      Radio.IrqProcess();
       break;
     }
     default: {
@@ -226,7 +226,7 @@ static void OnTxNextPacketTimerEvent() {
   if( status == LORAMAC_STATUS_OK ) {
     if( mibReq.Param.IsNetworkJoined ) {
       deviceState = DEVICE_STATE_SEND;
-      allowTx = true;
+      pendingTx = false;
     } else {
       // Network not joined yet. Try to join again
       MlmeReq_t mlmeReq;
@@ -278,7 +278,7 @@ static void MlmeConfirm( MlmeConfirm_t *mlmeConfirm ) {
         break;
     }
   }
-  allowTx = true;
+  pendingTx = false;
 }
 
 /*!
@@ -309,7 +309,7 @@ static void McpsConfirm( McpsConfirm_t *mcpsConfirm ) {
         break;
     }
   }
-  allowTx = true;
+  pendingTx = false;
 }
 
 void LoRaWAN_Init(DeviceClass_t CLASS,LoRaMacRegion_t REGION) {
@@ -380,14 +380,6 @@ void LoRaWAN_Join_ABP() {
   deviceState = DEVICE_STATE_SEND;
 }
 
-void LoRaWAN_Sleep() {
-  LowPower_Handler();
-  // Process Radio IRQ
-  Radio.IrqProcess();
-}
-
-
-
 /* Prepares the payload of the frame */
 static void PrepareTxFrame() {
     messageSize = 4;//messageSize max value is 64
@@ -402,7 +394,7 @@ static void PrepareTxFrame() {
  *
  * \retval  [0: frame could be send, 1: error]
  */
-bool SendFrame(bool confirmReception, uint8_t applicationPort) {
+LoRaMacStatus_t SendFrame(bool confirmReception, uint8_t applicationPort) {
   McpsReq_t mcpsReq;
   LoRaMacTxInfo_t txInfo;
 
@@ -430,24 +422,23 @@ bool SendFrame(bool confirmReception, uint8_t applicationPort) {
       mcpsReq.Req.Unconfirmed.Datarate = LORAWAN_DEFAULT_DATARATE;
     }
   }
-  if( LoRaMacMcpsRequest( &mcpsReq ) == LORAMAC_STATUS_OK ) {
-    return false;
-  }
-  return true;
+  return LoRaMacMcpsRequest( &mcpsReq );
 }
 
 void LoRaWAN_Send() {
-  if( allowTx ) {
-    MibRequestConfirm_t mibReq;
-    mibReq.Type = MIB_DEVICE_CLASS;
-    LoRaMacMibGetRequestConfirm( &mibReq );
+  if( pendingTx ) return;
 
-    if( mibReq.Param.Class != CLASS_A ) {
-      mibReq.Param.Class = CLASS_A;
-      LoRaMacMibSetRequestConfirm( &mibReq );
-    }
+  MibRequestConfirm_t mibReq;
+  mibReq.Type = MIB_DEVICE_CLASS;
+  LoRaMacMibGetRequestConfirm( &mibReq );
 
-    allowTx = SendFrame(true, 2);
+  if( mibReq.Param.Class != CLASS_A ) {
+    mibReq.Param.Class = CLASS_A;
+    LoRaMacMibSetRequestConfirm( &mibReq );
+  }
+
+  if( SendFrame(true, 2) == LORAMAC_STATUS_OK ) {
+    pendingTx = true;
   }
 }
 
