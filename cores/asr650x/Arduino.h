@@ -71,6 +71,8 @@
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
 #define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
 
+
+
 typedef bool boolean;
 typedef uint8_t byte;
 typedef uint16_t word;
