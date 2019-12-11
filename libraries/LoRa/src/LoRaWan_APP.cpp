@@ -15,7 +15,7 @@ CubeCell_NeoPixel pixels(1, RGB, NEO_GRB + NEO_KHZ800);
 #endif
 
 #ifdef CubeCell_BoardPlus
-#include <Wire.h>  
+#include <Wire.h>
 #include "cubecell_SH1107Wire.h"
 
   SH1107Wire  display(0x3c, 500000, I2C_NUM_0,GEOMETRY_128_64,GPIO10); // addr , freq , i2c group , resolution , rst
@@ -25,7 +25,7 @@ CubeCell_NeoPixel pixels(1, RGB, NEO_GRB + NEO_KHZ800);
 #endif
 
 #ifdef CubeCell_GPS
-#include <Wire.h>  
+#include <Wire.h>
 #include "cubecell_SSD1306Wire.h"
 
   SSD1306Wire  display(0x3c, 500000, I2C_NUM_0,GEOMETRY_128_64,GPIO10 ); // addr , freq , i2c group , resolution , rst
@@ -97,7 +97,7 @@ enum eDeviceState_LoraWan deviceState;
 bool SendFrame( void )
 {
 	lwan_dev_params_update();
-	
+
 	McpsReq_t mcpsReq;
 	LoRaMacTxInfo_t txInfo;
 
@@ -586,7 +586,7 @@ void LoRaWanClass::init(DeviceClass_t lorawanClass,LoRaMacRegion_t region)
 
 	mibReq.Type = MIB_DEVICE_CLASS;
 	LoRaMacMibGetRequestConfirm( &mibReq );
-	
+
 	if(loraWanClass != mibReq.Param.Class)
 	{
 		mibReq.Param.Class = loraWanClass;
