@@ -1,3 +1,8 @@
+function bytesToInt(by) {
+  f = by[0] | by[1]<<8 | by[2]<<16 | by[3]<<24;
+  return f;
+} 
+
 function bytesToFloat(by) {
   var bits = by[3]<<24 | by[2]<<16 | by[1]<<8 | by[0];
   var sign = (bits>>>31 === 0) ? 1.0 : -1.0;
@@ -471,28 +476,28 @@ if (port === 2) {
     }
     else if (sensor === "11") { // VL53L1X
       if (iicport === "0") {
-        decoded.P0_VL53L1X_distance = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P0_VL53L1X_distance = bytesToInt(bytes.slice(i,i+=4));
       }
       if (iicport === "1") {
-        decoded.P1_VL53L1X_distance = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P1_VL53L1X_distance = bytesToInt(bytes.slice(i,i+=4));
       }
       if (iicport === "2") {
-        decoded.P2_VL53L1X_distance = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P2_VL53L1X_distance = bytesToInt(bytes.slice(i,i+=4));
       }
       if (iicport === "3") {
-        decoded.P3_VL53L1X_distance = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P3_VL53L1X_distance = bytesToInt(bytes.slice(i,i+=4));
       }
       if (iicport === "4") {
-        decoded.P4_VL53L1X_distance = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P4_VL53L1X_distance = bytesToInt(bytes.slice(i,i+=4));
       }
       if (iicport === "5") {
-        decoded.P5_VL53L1X_distance = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P5_VL53L1X_distance = bytesToInt(bytes.slice(i,i+=4));
       }
       if (iicport === "6") {
-        decoded.P6_VL53L1X_distance = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P6_VL53L1X_distance = bytesToInt(bytes.slice(i,i+=4));
       }
       if (iicport === "7") {
-        decoded.P7_VL53L1X_distance = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P7_VL53L1X_distance = bytesToInt(bytes.slice(i,i+=4));
       }
     }
     else if (sensor === "12") { // HMC5883L
@@ -535,6 +540,40 @@ if (port === 2) {
         decoded.P7_HMC5883L_X = bytesToFloat(bytes.slice(i,i+=4));
         decoded.P7_HMC5883L_Y = bytesToFloat(bytes.slice(i,i+=4));
         decoded.P7_HMC5883L_Z = bytesToFloat(bytes.slice(i,i+=4));
+      }
+    }
+    else if (sensor === "13") { // MLX90614
+      if (iicport === "0") {
+        decoded.P0_VMLX90614_ambienttemp = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P0_VMLX90614_objecttemp = bytesToFloat(bytes.slice(i,i+=4));
+      }
+      if (iicport === "1") {
+        decoded.P1_VMLX90614_ambienttemp = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P1_VMLX90614_objecttemp = bytesToFloat(bytes.slice(i,i+=4));
+      }
+      if (iicport === "2") {
+        decoded.P2_VMLX90614_ambienttemp = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P2_VMLX90614_objecttemp = bytesToFloat(bytes.slice(i,i+=4));
+      }
+      if (iicport === "3") {
+        decoded.P3_VMLX90614_ambienttemp = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P3_VMLX90614_objecttemp = bytesToFloat(bytes.slice(i,i+=4));
+      }
+      if (iicport === "4") {
+        decoded.P4_VMLX90614_ambienttemp = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P4_VMLX90614_objecttemp = bytesToFloat(bytes.slice(i,i+=4));
+      }
+      if (iicport === "5") {
+        decoded.P5_VMLX90614_ambienttemp = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P5_VMLX90614_objecttemp = bytesToFloat(bytes.slice(i,i+=4));
+      }
+      if (iicport === "6") {
+        decoded.P6_VMLX90614_ambienttemp = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P6_VMLX90614_objecttemp = bytesToFloat(bytes.slice(i,i+=4));
+      }
+      if (iicport === "7") {
+        decoded.P7_VMLX90614_ambienttemp = bytesToFloat(bytes.slice(i,i+=4));
+        decoded.P7_VMLX90614_objecttemp = bytesToFloat(bytes.slice(i,i+=4));
       }
     }
     else if (sensor === "100") { // OneWire

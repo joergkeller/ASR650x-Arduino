@@ -1,4 +1,4 @@
-/* Heltec Automation Ping Pong communication test example
+/* Heltec Automation send communication test example
  *
  * Function:
  * 1. Send data from a CubeCell device over hardware 
@@ -47,21 +47,17 @@ char rxpacket[BUFFER_SIZE];
 
 static RadioEvents_t RadioEvents;
 
-int16_t txnumber;
+double txNumber;
 
-int16_t RSSI,rxSize;
-
+int16_t rssi,rxSize;
+void  DoubleToString( char *str, double double_num,unsigned int len);
 
 void setup() {
-    BoardInitMcu( );
+    boardInitMcu( );
     Serial.begin(115200);
 
-    txnumber=0;
-    RSSI=0;
-
- 
-
-
+    txNumber=0;
+    rssi=0;
 
     Radio.Init( &RadioEvents );
     Radio.SetChannel( RF_FREQUENCY );
@@ -75,21 +71,33 @@ void setup() {
 
 void loop()
 {
+	delay(1000);
+	txNumber += 0.01;
+	sprintf(txpacket,"%s","Hello world number");  //start a package
+//	sprintf(txpacket+strlen(txpacket),"%d",txNumber); //add to the end of package
+	
+	DoubleToString(txpacket,txNumber,3);	   //add to the end of package
+	
+	turnOnRGB(COLOR_SEND,0); //change rgb color
 
-		
-			delay(1000);
-			txnumber++;
-		    sprintf(txpacket,"%s","Hello world number");  //start a package
-        sprintf(txpacket+strlen(txpacket),"%d",txnumber); //add to the end of package
-		   
-		    RGB_ON(COLOR_SEND,0); //change rgb light
+	Serial.printf("\r\nsending packet \"%s\" , length %d\r\n",txpacket, strlen(txpacket));
 
-		    Serial.printf("\r\nsending packet \"%s\" , length %d\r\n",txpacket, strlen(txpacket));
-
-		    Radio.Send( (uint8_t *)txpacket, strlen(txpacket) ); //send the package out
-		   
-		
+	Radio.Send( (uint8_t *)txpacket, strlen(txpacket) ); //send the package out	
 }
 
+/**
+  * @brief  Double To String
+  * @param  str: Array or pointer for storing strings
+  * @param  double_num: Number to be converted
+  * @param  len: Fractional length to keep
+  * @retval None
+  */
+void  DoubleToString( char *str, double double_num,unsigned int len) { 
+  double fractpart, intpart;
+  fractpart = modf(double_num, &intpart);
+  fractpart = fractpart * (pow(10,len));
+  sprintf(str + strlen(str),"%d", (int)(intpart)); //Integer part
+  sprintf(str + strlen(str), ".%d", (int)(fractpart)); //Decimal part
+}
 
 

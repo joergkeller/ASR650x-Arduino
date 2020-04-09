@@ -50,20 +50,24 @@
 #include "Stream.h"
 #include "cytypes.h"
 
+#define UART_NUM_0     0
+#define UART_NUM_1     1
+
 
 class HardwareSerial: public Stream
 {
 public:
-    HardwareSerial(int uart_nr);
+    HardwareSerial(int8_t uart_nr);
 
-    void begin(unsigned long baud, uint32_t config=-1, int8_t rxPin=-1, int8_t txPin=-1, bool invert=false, unsigned long timeout_ms = 20000UL);
+    void begin(unsigned long baud = 115200, int8_t uart_num =-1, uint32_t config=-1, bool invert=false, unsigned long timeout_ms = 20000UL);
     void end();
     void updateBaudRate(unsigned long baud);
     int available(void);
     int availableForWrite(void);
     int peek(void);
-    uint32 read(void);
+    int read(void);
     void flush(void);
+    uint16_t readBytesUntil(char terminator, char *buffer, uint16_t length);
     size_t write(uint8_t);
     size_t write(const uint8_t *buffer, size_t size);
 
@@ -94,13 +98,15 @@ public:
     void setDebugOutput(bool);
 
 protected:
-    int _uart_nr;
+    uint8_t _uart_num;
     uint32_t SerialBaud;
     //uart_t* _uart;
 };
 
 #if !defined(NO_GLOBAL_INSTANCES) && !defined(NO_GLOBAL_SERIAL)
 extern HardwareSerial Serial;
+extern HardwareSerial Serial1;
+
 #endif
 
 #endif
