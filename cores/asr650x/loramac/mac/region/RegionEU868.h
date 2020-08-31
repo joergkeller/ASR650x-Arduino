@@ -47,6 +47,11 @@
 #define EU868_MAX_NB_CHANNELS                       16
 
 /*!
+ * The default number of join trials.
+ */
+#define EU868_DEFAULT_PHY_NB_JOIN_TRIALS             48
+
+/*!
  * Number of default channels
  */
 #define EU868_NUMB_DEFAULT_CHANNELS                 3
@@ -79,7 +84,7 @@
 /*!
  * Default datarate used by the node
  */
-#define EU868_DEFAULT_DATARATE                      DR_0
+#define EU868_DEFAULT_DATARATE                      DR_5
 
 /*!
  * Minimal Rx1 receive datarate offset
@@ -276,11 +281,11 @@
  */
 #define EU868_LC3                                   { 868500000, 0, { ( ( DR_5 << 4 ) | DR_0 ) }, 1 }
 
-#define EU868_LC4                { 867100000,0, { ( ( DR_5 << 4 ) | DR_0 ) }, 0 }
-#define EU868_LC5                { 867300000,0, { ( ( DR_5 << 4 ) | DR_0 ) }, 0 }
-#define EU868_LC6                { 867500000,0, { ( ( DR_5 << 4 ) | DR_0 ) }, 0 }
-#define EU868_LC7                { 867700000,0, { ( ( DR_5 << 4 ) | DR_0 ) }, 0 }
-#define EU868_LC8                { 867900000,0, { ( ( DR_5 << 4 ) | DR_0 ) }, 0 }
+#define EU868_LC4                { 867100000,0, { ( ( DR_5 << 4 ) | EU868_TX_MIN_DATARATE ) }, 0 }
+#define EU868_LC5                { 867300000,0, { ( ( DR_5 << 4 ) | EU868_TX_MIN_DATARATE ) }, 0 }
+#define EU868_LC6                { 867500000,0, { ( ( DR_5 << 4 ) | EU868_TX_MIN_DATARATE ) }, 0 }
+#define EU868_LC7                { 867700000,0, { ( ( DR_5 << 4 ) | EU868_TX_MIN_DATARATE ) }, 0 }
+#define EU868_LC8                { 867900000,0, { ( ( DR_5 << 4 ) | EU868_TX_MIN_DATARATE ) }, 0 }
 
 
 /*!

@@ -26,11 +26,11 @@ bool OLEDDisplay::init() {
 	{
 		pinMode(this->rst,OUTPUT);
 		digitalWrite(this->rst,HIGH);
-		delay(20);
+		delay(1);
 		digitalWrite(this->rst,LOW);
-		delay(20);
+		delay(1);
 		digitalWrite(this->rst,HIGH);
-		delay(20);
+		delay(1);
 	}
 
 	logBufferSize = 0;
@@ -79,6 +79,10 @@ void OLEDDisplay::end() {
   if (this->buffer_back) { free(this->buffer_back - getBufferOffset()); this->buffer_back = NULL; }
   #endif
   if (this->logBuffer != NULL) { free(this->logBuffer); this->logBuffer = NULL; }
+  if(this->rst!=-1)
+  {
+    pinMode(this->rst,ANALOG);
+  }
 }
 
 void OLEDDisplay::resetDisplay(void) {
@@ -186,9 +190,9 @@ void OLEDDisplay::drawCircle(int16_t x0, int16_t y0, int16_t radius) {
 	int16_t dp = 1 - radius;
 	do {
 		if (dp < 0)
-			dp = dp + (++x) << 1 + 3;
+			dp = dp + ((++x) << 1) + 3;
 		else
-			dp = dp + (++x) << 1 - (--y) << 1 + 5;
+			dp = dp + ((++x) << 1) - ((--y) << 1) + 5;
 
 		setPixel(x0 + x, y0 + y);     //For the 8 octants
 		setPixel(x0 - x, y0 + y);
@@ -212,9 +216,9 @@ void OLEDDisplay::drawCircleQuads(int16_t x0, int16_t y0, int16_t radius, uint8_
   int16_t dp = 1 - radius;
   while (x < y) {
     if (dp < 0)
-      dp = dp + (++x) << 1 + 3;
+      dp = dp + ((++x) << 1) + 3;
     else
-      dp = dp + (++x) << 1 - (--y) << 1 + 5;
+      dp = dp + ((++x) << 1) - ((--y) << 1) + 5;
     if (quads & 0x1) {
       setPixel(x0 + x, y0 - y);
       setPixel(x0 + y, y0 - x);
@@ -252,9 +256,9 @@ void OLEDDisplay::fillCircle(int16_t x0, int16_t y0, int16_t radius) {
 	int16_t dp = 1 - radius;
 	do {
 		if (dp < 0)
-      dp = dp + (++x) << 1 + 3;
+      dp = dp + ((++x) << 1) + 3;
     else
-      dp = dp + (++x) << 1 - (--y) << 1 + 5;
+      dp = dp + ((++x) << 1) - ((--y) << 1) + 5;
 
     drawHorizontalLine(x0 - x, y0 - y, 2*x);
     drawHorizontalLine(x0 - x, y0 + y, 2*x);
@@ -458,7 +462,7 @@ void OLEDDisplay::drawStringInternal(int16_t xMove, int16_t yMove, char* text, u
 
   // Don't draw anything if it is not on the screen.
   if (xMove + textWidth  < 0 || xMove > this->width() ) {return;}
-  if (yMove + textHeight < 0 || yMove > this->width() ) {return;}
+  if (yMove + textHeight < 0 || yMove > this->height() ) {return;}
 
   for (uint16_t j = 0; j < textLength; j++) {
     int16_t xPos = xMove + cursorX;
@@ -1060,6 +1064,19 @@ void inline OLEDDisplay::drawInternal(int16_t xMove, int16_t yMove, int16_t widt
     }
   }
 }
+
+void OLEDDisplay::sleep() {
+	sendCommand(0x8D);
+	sendCommand(0x10);
+	sendCommand(0xAE);
+}
+
+void OLEDDisplay::wakeup() {
+	sendCommand(0x8D);
+	sendCommand(0x14);
+	sendCommand(0xAF);
+}
+
 
 // You need to free the char!
 char* OLEDDisplay::utf8ascii(String str) {

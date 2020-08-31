@@ -274,7 +274,7 @@ PhyParam_t RegionCN470GetPhyParam( GetPhyParams_t* getPhy )
         case PHY_NB_JOIN_TRIALS:
         case PHY_DEF_NB_JOIN_TRIALS:
         {
-            phyParam.Value = 48;
+            phyParam.Value = CN470_DEFAULT_PHY_NB_JOIN_TRIALS;
             break;
         }
         case PHY_BEACON_FORMAT:
@@ -378,7 +378,7 @@ bool RegionCN470Verify( VerifyParams_t* verify, PhyAttribute_t phyAttribute )
         }
         case PHY_NB_JOIN_TRIALS:
         {
-            if( verify->NbJoinTrials < 48 )
+            if( verify->NbJoinTrials < CN470_DEFAULT_PHY_NB_JOIN_TRIALS )
             {
                 return false;
             }
@@ -547,7 +547,7 @@ bool RegionCN470TxConfig( TxConfigParams_t* txConfig, int8_t* txPower, TimerTime
     // Setup the radio frequency
     Radio.SetChannel( Channels[txConfig->Channel].Frequency );
 
-    Radio.SetTxConfig( MODEM_LORA, phyTxPower, 0, 0, phyDr, 1, 8, false, true, 0, 0, false, 3000 );
+    Radio.SetTxConfig( MODEM_LORA, phyTxPower, 0, 0, phyDr, 1, 16, false, true, 0, 0, false, 3000 );
     FREQ_PRINTF("TX on freq %u Hz at DR %d\r\n", (unsigned int)Channels[txConfig->Channel].Frequency, txConfig->Datarate);
 
     // Setup maximum payload lenght of the radio driver

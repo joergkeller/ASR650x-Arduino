@@ -21,8 +21,7 @@ typedef enum
 
 #define UART_RX P3_0
 #define UART_TX P3_1
-#define Vext P3_2 //gpio6
-#define VBAT_ADC_CTL P3_3 //gpio7
+#define USER_KEY P3_3
 #define GPIO0 P0_2
 #define GPIO1 P6_1
 #define GPIO2 P6_2 //can be used in PWM mode
@@ -36,6 +35,5 @@ typedef enum
 #define ADC P2_3
 #define PWM1 P6_2 //gpio2
 #define PWM2 P6_4 //gpio3
-#define RGB P0_7 //gpio4
 
 #endif /* Pins_Arduino_h */

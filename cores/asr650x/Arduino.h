@@ -23,6 +23,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdlib_noniso.h>
 #include <string.h>
 #include <math.h>
 #include <ASR_Arduino.h>
@@ -54,11 +55,24 @@
 #define  bitSet(value, bit)   ((value) |= (1UL << (bit)))
 #define  bitClear(value, bit)   ((value) &= ~(1UL << (bit)))
 #define  bit(b)   (1 << (b))
+#define  _BV(b)   (1UL << (b))
 
+//#ifdef __cplusplus
+//#include <algorithm>
+
+//using std::abs;
+//using std::max;
+//using std::min;
+//#else
 #define min(a, b) ((a)<(b)?(a):(b))
 #define max(a, b) ((a)>(b)?(a):(b))
 #define abs(x)   ((x)>0?(x):-(x))
+//#endif /* __cplusplus */
+
 #define constrain(amt, low, high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+#define radians(deg) ((deg)*DEG_TO_RAD)
+#define degrees(rad) ((rad)*RAD_TO_DEG)
+#define sq(x) ((x)*(x))
 #define _min(a,b) ((a)<(b)?(a):(b))
 #define _max(a,b) ((a)>(b)?(a):(b))
 #define noInterrupts() CyGlobalIntDisable
@@ -88,6 +102,14 @@ typedef uint16_t word;
 // assuming Arduino.h or WProgram.h automatically includes it...
 //
 
+uint16_t makeWord(uint16_t w);
+uint16_t makeWord(byte h, byte l);
+
+#define word(...) makeWord(__VA_ARGS__)
+
+uint32_t pulseIn(uint8_t pin_name,uint8_t mode,uint32_t timeout = 1000000);
+
+long random(long howbig);
 
 // Include Atmel headers
 

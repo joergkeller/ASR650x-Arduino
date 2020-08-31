@@ -52,25 +52,23 @@ typedef enum
 
 typedef void( *GpioIrqHandler )( void );
 extern GpioIrqHandler GpioIrqHandlerCallback[P7_7];
-extern bool lowPowerEnabled;
 void globalGpioIsrEntry (void); 
 void pinMode(uint8_t pin_name,PINMODE mode);
-void digitalWrite(uint8_t pin_name,PINLEVEL level);
+void digitalWrite(uint8_t pin_name,uint8_t level);
 uint8_t digitalRead(uint8_t pin_name);
 uint8_t digitalReadOutPut(uint8_t pin_name);
 void pinToggle(uint8_t pin_name);
 void ClearPinInterrupt(uint8_t pin_name);
 void attachInterrupt(uint8_t pin_name, GpioIrqHandler GpioIrqHandlerCallback, IrqModes interrupt_mode);
 void detachInterrupt(uint8_t pin_name);
-int16 analogRead (uint8_t pin);//the value returned is in mV units, max value can be read is 3300 mV.
-void analogWrite (uint8_t pin, uint8_t value) ;
+int16 analogRead(uint8_t pin);//the value returned is in mV units, max value can be read is 3300 mV.
+void analogWrite(uint8_t pin, uint16_t value);
 void delay(uint32_t milliseconds);
 void delayMicroseconds(uint16 microseconds);
 uint32_t millis(void);
 uint32_t micros(void);
 uint64_t getID(void);
 int cubecell_random(int r);
-uint32_t pulseIn(uint8_t pin_name,PINLEVEL mode,uint32_t timeout);
 #ifdef __cplusplus 
 }
 #endif

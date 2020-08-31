@@ -27,18 +27,18 @@ typedef enum
 #define UART_TX2 P4_5
 #define Vext P3_2 
 #define VBAT_ADC_CTL P3_3 
+#define USER_KEY P3_3
 #define SDA P0_1
 #define SCL P0_0
-#define RGB P0_6  //GPIO13
 #define PWM1 P6_2 
 #define PWM2 P6_4
 #define ADC1 P2_0
 #define ADC ADC1
 #define ADC2 P2_1
 #define ADC3 P2_2
-#define GPIO1 P6_1
-#define GPIO2 P6_2
-#define GPIO3 P6_3
+#define GPIO1 P6_0
+#define GPIO2 P6_1
+#define GPIO3 P6_2
 #define GPIO4 P6_4
 #define GPIO5 P3_4
 #define GPIO6 P3_6
@@ -48,7 +48,7 @@ typedef enum
 #define GPIO10 P7_2
 #define GPIO11 P0_2
 #define GPIO12 P0_3
-#define GPIO13 P0_6 //RGB
+#define GPIO13 P0_6 
 #define GPIO14 P0_7
 
 #endif /* Pins_Arduino_h */

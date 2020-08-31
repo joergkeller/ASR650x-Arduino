@@ -127,14 +127,16 @@ static bool VerifyTxFreq( uint32_t freq )
 
     // Verify if the frequency is valid. The frequency must be in a specified
     // range and can be set to specific values.
-    if( ( tmpFreq >= 920900000 ) && ( tmpFreq <=923300000 ) )
+    //if( ( tmpFreq >= 920900000 ) && ( tmpFreq <=923300000 ) )
+    if( ( tmpFreq >= 920000000 ) && ( tmpFreq <=924000000 ) )
     {
+    	return true;
         // Range ok, check for specific value
-        tmpFreq -= 920900000;
-        if( ( tmpFreq % 200000 ) == 0 )
-        {
-            return true;
-        }
+        //tmpFreq -= 920900000;
+        //if( ( tmpFreq % 200000 ) == 0 )
+        //{
+        //    return true;
+        //}
     }
     return false;
 }
@@ -633,7 +635,7 @@ bool RegionKR920TxConfig( TxConfigParams_t* txConfig, int8_t* txPower, TimerTime
     // Setup the radio frequency
     Radio.SetChannel( Channels[txConfig->Channel].Frequency );
 
-    Radio.SetTxConfig( MODEM_LORA, phyTxPower, 0, bandwidth, phyDr, 1, 8, false, true, 0, 0, false, 4e3 );
+    Radio.SetTxConfig( MODEM_LORA, phyTxPower, 0, bandwidth, phyDr, 1, 16, false, true, 0, 0, false, 4e3 );
     FREQ_PRINTF("TX on freq %u Hz at DR %d\r\n", (unsigned int)Channels[txConfig->Channel].Frequency, txConfig->Datarate);
 
     // Setup maximum payload lenght of the radio driver

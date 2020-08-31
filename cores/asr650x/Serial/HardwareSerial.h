@@ -63,11 +63,12 @@ public:
     void end();
     void updateBaudRate(unsigned long baud);
     int available(void);
+    void delayByte(void);
     int availableForWrite(void);
     int peek(void);
     int read(void);
     void flush(void);
-    uint16_t readBytesUntil(char terminator, char *buffer, uint16_t length);
+//    uint16_t readBytesUntil(char terminator, char *buffer, uint16_t length);
     size_t write(uint8_t);
     size_t write(const uint8_t *buffer, size_t size);
 

@@ -53,8 +53,8 @@ void HardwareSerial::updateBaudRate(unsigned long baud)
 	SerialBaud = baud;
 	if( _uart_num == UART_NUM_0)
 	{
-		uint32_t div = (float)CYDEV_BCLK__HFCLK__HZ/SerialBaud/UART_2_UART_OVS_FACTOR + 0.5 - 1;
-		UART_2_SCBCLK_DIV_REG = div<<8;
+		uint32_t div = (float)CYDEV_BCLK__HFCLK__HZ/SerialBaud/UART_1_UART_OVS_FACTOR + 0.5 - 1;
+		UART_1_SCBCLK_DIV_REG = div<<8;
 	}
 	else
 	{
@@ -97,22 +97,28 @@ void HardwareSerial::setDebugOutput(bool en)
 int HardwareSerial::available(void)
 {
 	uint8_t buffsize;
-	for(uint32_t i=0;i<(23040000/SerialBaud);i++)
+	//for(uint32_t i=0;i<(23040000/SerialBaud);i++)
+	//{
+	if( _uart_num == UART_NUM_0)
 	{
-		if( _uart_num == UART_NUM_0)
-		{
-			buffsize=UART_1_SpiUartGetRxBufferSize();
-		}
-		else
-		{
-			buffsize=UART_2_SpiUartGetRxBufferSize();
-		}
-		if(buffsize){
-			return buffsize;
-		}
+		buffsize=UART_1_SpiUartGetRxBufferSize();
 	}
+	else
+	{
+		buffsize=UART_2_SpiUartGetRxBufferSize();
+	}
+	if(buffsize){
+		return buffsize;
+	}
+	//}
 	return 0;
 }
+void HardwareSerial::delayByte(void)
+{
+	delayMicroseconds(11000000/SerialBaud);
+}
+
+
 int HardwareSerial::availableForWrite(void)
 {
    // return uartAvailableForWrite(_uart);
@@ -192,28 +198,12 @@ size_t HardwareSerial::write(const uint8_t *buffer, size_t size)
 uint32_t  HardwareSerial::baudRate()
 {
 	//return uartGetBaudRate(_uart);
-	return 0;
+	return SerialBaud;
 }
 HardwareSerial::operator bool() const
 {
-    //return true;
-    return 0;
+    return true;
+    //return 0;
 }
 
-uint16_t HardwareSerial::readBytesUntil(char terminator, char *buffer, uint16_t length)
-{
-	if(length < 1) {
-		return 0;
-	}
-	uint16_t index = 0;
-	while(index < length && available()) {
-		uint8_t c = (uint8_t)read();
-		if(c == terminator) {
-			break;
-		}
-		*buffer++ = c;
-		index++;
-	}
-	return index; // return number of characters, not including null terminator
-}
 

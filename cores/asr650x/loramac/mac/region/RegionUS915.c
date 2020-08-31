@@ -286,7 +286,7 @@ PhyParam_t RegionUS915GetPhyParam( GetPhyParams_t* getPhy )
         case PHY_NB_JOIN_TRIALS:
         case PHY_DEF_NB_JOIN_TRIALS:
         {
-            phyParam.Value = 2;
+            phyParam.Value = US915_DEFAULT_PHY_NB_JOIN_TRIALS;
             break;
         }
 
@@ -414,7 +414,7 @@ bool RegionUS915Verify( VerifyParams_t* verify, PhyAttribute_t phyAttribute )
         }
         case PHY_NB_JOIN_TRIALS:
         {
-            if( verify->NbJoinTrials < 2 )
+            if( verify->NbJoinTrials < US915_DEFAULT_PHY_NB_JOIN_TRIALS )
             {
                 return false;
             }
@@ -433,14 +433,10 @@ void RegionUS915ApplyCFList( ApplyCFListParams_t* applyCFList )
 
 bool RegionUS915ChanMaskSet( ChanMaskSetParams_t* chanMaskSet )
 {
-    uint8_t nbChannels = RegionCommonCountChannels( chanMaskSet->ChannelsMaskIn, 0, 4 );
+    uint8_t nbChannels = RegionCommonCountChannels( chanMaskSet->ChannelsMaskIn, 0, 5 );
 
     // Check the number of active channels
-    if( ( nbChannels < 2 ) &&
-        ( nbChannels > 0 ) )
-    {
-        return false;
-    }
+    if(nbChannels==0)return false;
 
     switch( chanMaskSet->ChannelsMaskType )
     {
@@ -605,8 +601,8 @@ bool RegionUS915TxConfig( TxConfigParams_t* txConfig, int8_t* txPower, TimerTime
     Radio.SetChannel( Channels[txConfig->Channel].Frequency );
 
     Radio.SetMaxPayloadLength( MODEM_LORA, txConfig->PktLen );
-    Radio.SetTxConfig( MODEM_LORA, phyTxPower, 0, bandwidth, phyDr, 1, 8, false, true, 0, 0, false, 3e3 );
-    FREQ_PRINTF("TX on freq %u Hz at DR %d\r\n", (unsigned int)Channels[txConfig->Channel].Frequency, txConfig->Datarate);
+    Radio.SetTxConfig( MODEM_LORA, phyTxPower, 0, bandwidth, phyDr, 1, 14, false, true, 0, 0, false, 3e3 );
+    FREQ_PRINTF("TX on freq %u Hz at DR %d power %d dBm\r\n", (unsigned int)Channels[txConfig->Channel].Frequency, txConfig->Datarate,phyTxPower);
 
     *txTimeOnAir = Radio.TimeOnAir( MODEM_LORA,  txConfig->PktLen );
     *txPower = txPowerLimited;
@@ -778,7 +774,7 @@ int8_t RegionUS915AlternateDr( AlternateDrParams_t* alternateDr )
     int8_t datarate = 0;
 
     // Re-enable 500 kHz default channels
-    ChannelsMask[4] = 0x00FF;
+    //ChannelsMask[4] = 0x00FF;
 
     if( ( alternateDr->NbTrials & 0x01 ) == 0x01 )
     {

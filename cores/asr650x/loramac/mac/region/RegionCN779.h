@@ -79,7 +79,7 @@
 /*!
  * Default datarate used by the node
  */
-#define CN779_DEFAULT_DATARATE                      DR_0
+#define CN779_DEFAULT_DATARATE                      DR_5
 
 /*!
  * Minimal Rx1 receive datarate offset

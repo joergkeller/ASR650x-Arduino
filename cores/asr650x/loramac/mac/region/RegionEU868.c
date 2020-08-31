@@ -325,7 +325,7 @@ PhyParam_t RegionEU868GetPhyParam( GetPhyParams_t* getPhy )
         case PHY_NB_JOIN_TRIALS:
         case PHY_DEF_NB_JOIN_TRIALS:
         {
-            phyParam.Value = 48;
+            phyParam.Value = EU868_DEFAULT_PHY_NB_JOIN_TRIALS;
             break;
         }
         case PHY_BEACON_CHANNEL_FREQ:
@@ -417,7 +417,7 @@ bool RegionEU868Verify( VerifyParams_t* verify, PhyAttribute_t phyAttribute )
         }
         case PHY_NB_JOIN_TRIALS:
         {
-            if( verify->NbJoinTrials < 48 )
+            if( verify->NbJoinTrials < EU868_DEFAULT_PHY_NB_JOIN_TRIALS )
             {
                 return false;
             }
@@ -662,7 +662,7 @@ bool RegionEU868TxConfig( TxConfigParams_t* txConfig, int8_t* txPower, TimerTime
     else
     {
         modem = MODEM_LORA;
-        Radio.SetTxConfig( modem, phyTxPower, 0, bandwidth, phyDr, 1, 8, false, true, 0, 0, false, 3000 );
+        Radio.SetTxConfig( modem, phyTxPower, 0, bandwidth, phyDr, 1, 16, false, true, 0, 0, false, 3000 );
     }
     FREQ_PRINTF("TX on freq %u Hz at DR %d\r\n", (unsigned int)Channels[txConfig->Channel].Frequency, txConfig->Datarate);
     // Setup maximum payload lenght of the radio driver
