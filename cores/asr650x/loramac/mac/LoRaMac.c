@@ -3100,7 +3100,7 @@ LoRaMacStatus_t LoRaMacQueryTxPossible( uint8_t size, LoRaMacTxInfo_t *txInfo )
     PhyParam_t phyParam;
     int8_t datarate;
     int8_t txPower = LoRaMacParamsDefaults.ChannelsTxPower;
-    
+
     // Get the minimum possible datarate
     getPhy.Attribute = PHY_MIN_TX_DR;
     phyParam = RegionGetPhyParam( LoRaMacRegion, &getPhy );
@@ -3172,7 +3172,7 @@ LoRaMacStatus_t LoRaMacQueryTxPossible( uint8_t size, LoRaMacTxInfo_t *txInfo )
 		getPhy.UplinkDwellTime = LoRaMacParams.UplinkDwellTime;
 		getPhy.Datarate = datarate;
 		getPhy.Attribute = PHY_MAX_PAYLOAD;
-		
+
 		// Change request in case repeater is supported
 		if( LoRaMacParams.RepeaterSupport == true ) {
 			getPhy.Attribute = PHY_MAX_PAYLOAD_REPEATER;
