@@ -36,7 +36,7 @@
 #elif defined(__SAMD21G18A__)
 #define IO_REG_TYPE uint32_t
 
-#elif defined(__ASR6501__)
+#elif defined(__ASR650x__)
 #define IO_REG_TYPE uint8_t
 
 #elif defined(RBL_NRF51822)
